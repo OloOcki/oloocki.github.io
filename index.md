@@ -1,37 +1,41 @@
-## Welcome to GitHub Pages
+## **Datasets from [Geoportal Berlin](https://fbinter.stadt-berlin.de/fb/index.jsp):**
 
-You can use the [editor on GitHub](https://github.com/OloOcki/oloocki.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+- [**Lichtsignalanlagen**](https://fbinter.stadt-berlin.de/fb/gisbroker.do;jsessionid=BD84CD5D34374FCF3178125F47C55E97?cmd=navigationShowResult&mid=K.lsa%40senstadt) (*Traffic lights*)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+  - Dataset containing position of each traffic light in Berlin, also address information available
 
-### Markdown
+- [**Verkehrszellen/Teilverkehrszellen in Berlin**](https://fbinter.stadt-berlin.de/fb/gisbroker.do;jsessionid=BD84CD5D34374FCF3178125F47C55E97?cmd=navigationShowResult&mid=K.vkz%40senstadt) (*Traffic cells / partial traffic cells in Berlin*)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+  - Dataset containing polygons describing traffic cells for mobility planning for city authorithies
 
-```markdown
-Syntax highlighted code block
+- [**Radverkehrsanlage**](https://fbinter.stadt-berlin.de/fb/gisbroker.do;jsessionid=BD84CD5D34374FCF3178125F47C55E97?cmd=map_start) (*Cycling facilities*)
 
-# Header 1
-## Header 2
-### Header 3
+  - Dataset containing types of cycleways (cycle track, cycle lane), type of share (shared with pedestrians or only for cycling), 
+types of lines (solid line, dashed line), obligation to use (yes, no), also address information available 
 
-- Bulleted
-- List
+  - Dataset containing position of traffic signs for cyclists, with a type of sign and address information 
 
-1. Numbered
-2. List
+- [**Straßenbeleuchtung-Berlin**](https://opendata-esri-de.opendata.arcgis.com/datasets/esri-de-content::stra%C3%9Fenbeleuchtung-berlin) (*Public street lighting*)
 
-**Bold** and _Italic_ and `Code` text
+  - Dataset with the street lighting with the respective location, a symbol indicating the type of street light and source of power
 
-[Link](url) and ![Image](src)
-```
+- [**Tempolimits**](https://fbinter.stadt-berlin.de/fb/gisbroker.do;jsessionid=BD84CD5D34374FCF3178125F47C55E97?cmd=navigationShowResult&mid=K.k_vms_tempolimits_spatial%40senstadt) (*Speed limits*)
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+  - Dataset containing road network with speed limits for each segment, at certain time of specific days 
 
-### Jekyll Themes
+- [**Detailnetz Verbindungspunkte**](https://fbinter.stadt-berlin.de/fb/berlin/service_intern.jsp?id=s_vms_detailnetz_spatial_verbpunkte@senstadt&type=WFS) (*Detail network junction points*)
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/OloOcki/oloocki.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+  - Dataset contains crossroads and other junctions of different types of roads
 
-### Support or Contact
+- [**Winterdienstmaßnahmen auf Gehwegen**](https://fbinter.stadt-berlin.de/fb/gisbroker.do;jsessionid=09EDD71C8B088737D72A1990530256E9?cmd=navigationShowResult&mid=S.s_winterdienst%40senstadt) (*Winter maintenance on sidewalks*)
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+  - Dataset containing information what part of sidewalks (including cycleways) are cleaned by city maintanance during winter
+
+## **Dataset from [Statistisches Bundesamt (Destatis):](https://www.destatis.de/EN/About-Us/_node.html)** (*The Federal Statistical Office*):
+
+- [**Verkehrsunfälle 2018**](https://unfallatlas.statistikportal.de/) (*Traffic accidents 2018*)
+
+  - Dataset contains road accidents with personal injury on national level. It has position, type of accident (i.e. Turning accident, Turning
+over / crossing accident) type of collission (i. e. collision with laterally moving vehicle), accident category (i.e. accident with
+fatalities, accident with severely injured), Light conditions (i.e. daylight, night), road conditions (i.e. wet, dry, snow), number of
+participating drivers and type of vehicle (i.e. bicycle, car) or pedestrians
