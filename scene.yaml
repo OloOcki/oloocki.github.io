@@ -1,0 +1,246 @@
+cameras:
+    camera1:
+        type: isometric
+
+lights:
+    light1:
+        type: directional
+        direction: [0, 1, -.5]
+        diffuse: 1.1
+        ambient: 1
+styles:
+    dangerZones:
+        base: polygons
+        blend: overlay
+        blend_order: 360
+    slowDown:
+        base: points
+        blend: overlay
+        blend_order: 362
+        texture: img/slowDown.png 
+    callTheWinterMaintanance:
+        base: points
+        blend: overlay
+        blend_order: 363
+        texture: img/winterDienst.png 
+    whereIsAStreetLight:
+        base: points
+        blend: overlay
+        blend_order: 364
+        texture: img/streetLightnew.png
+    mostDangerousRoadJunctions:
+        base: points
+        blend: overlay
+        blend_order: 365
+        texture: img/dangerJunctions.png
+    buildingsStyle:
+        base: polygons
+        blend: overlay
+        blend_order: 361
+
+
+sources:
+    xyz_osm:
+        type: MVT
+        url: https://xyz.api.here.com/tiles/osmbase/256/all/{z}/{x}/{y}.mvt
+        max_zoom: 16
+        url_params:
+            access_token: 'AAFBOOBWSaa6qM4XCBz-sgA'
+
+    mostDangerousRoadJunctions:
+        url: https://xyz.api.here.com/hub/spaces/TxMfFToA/tile/web/{z}_{x}_{y}
+        type: GeoJSON
+        url_params:
+            access_token: 'AAFBOOBWSaa6qM4XCBz-sgA'
+
+    slowDown:
+        url: https://xyz.api.here.com/hub/spaces/g39QDkqy/tile/web/{z}_{x}_{y} 
+        type: GeoJSON
+        url_params:
+            access_token: 'AAFBOOBWSaa6qM4XCBz-sgA'
+
+    callTheWinterMaintanance:
+        url: https://xyz.api.here.com/hub/spaces/p4jlTjuS/tile/web/{z}_{x}_{y}
+        type: GeoJSON
+        url_params:
+            access_token: 'AAFBOOBWSaa6qM4XCBz-sgA' 
+
+    whereIsAStreetLight:
+        url: https://xyz.api.here.com/hub/spaces/BZrv6KYb/tile/web/{z}_{x}_{y} 
+        type: GeoJSON
+        url_params:
+            access_token: 'AAFBOOBWSaa6qM4XCBz-sgA'
+
+    accidentsPerCell:
+        url: https://xyz.api.here.com/hub/spaces/JhsAxN6a/tile/web/{z}_{x}_{y}
+        type: GeoJSON
+        url_params:
+            access_token: 'AAFBOOBWSaa6qM4XCBz-sgA' 
+
+
+layers:
+    earth:
+        data: { source: xyz_osm }
+        draw:
+            polygons:
+                order: function() { return feature.sort_rank; }
+                color: '#2c2c2c'
+
+    landuse:
+        data: { source: xyz_osm }
+        draw:
+            polygons:
+                order: function() { return feature.sort_rank; }
+                color: '#2b2e2b'
+
+    water:
+        data: { source: xyz_osm }
+        draw:
+            polygons:
+                order: function() { return feature.sort_rank; }
+                color: '#1d1d1f'
+
+    roads:
+        data: { source: xyz_osm }
+        filter:
+            not: { kind: [path, rail, ferry] }
+        draw:
+            lines:
+                order: function() { return feature.sort_rank; }
+                color: '#4f4b4b'
+                width: 8
+                cap: round
+        highway:
+            filter:
+                kind: highway
+            draw:
+                lines:
+                    order: function() { return feature.sort_rank; }
+                    color: '#4f4b4b'
+                    width: 12
+                    outline:
+                        color: grey
+                        width: 1.5
+        minor_road:
+            filter:
+                kind: minor_road
+            draw:
+                lines:
+                    order: function() { return feature.sort_rank; }
+                    color: '#4f4b4b'
+                    width: 5
+
+    buildings:
+        data: { source: xyz_osm }
+        draw:
+            polygons:
+                style: buildingsStyle
+                #order: function() { return feature.sort_rank; }
+                color: '#241e1e'
+        3d-buildings:
+            filter: { $zoom: { min: 15 } }
+            draw:
+                polygons:
+                    style: buildingsStyle
+                    extrude: function () { return feature.height > 20 || $zoom >= 16; }
+
+    mostDangerousRoadJunctions:
+        data: {source: mostDangerousRoadJunctions}
+        filter: { $zoom: { min: 12 } }
+        draw:
+          points:
+            style: mostDangerousRoadJunctions
+            #order: 364
+            #color: purple
+            size: 36px
+            interactive: true
+
+    slowDown:
+        data: {source: slowDown}
+        filter: { $zoom: { min: 12 } }
+        draw:
+          points:
+            style: slowDown
+            #order: 363
+            #color: black
+            size: 36px
+            interactive: true  
+    
+    callTheWinterMaintanance:
+        data: {source: callTheWinterMaintanance}
+        filter: { $zoom: { min: 12 } }
+        draw:
+          points:
+            style: callTheWinterMaintanance
+            #order: 362
+            #color: white
+            size: 36px
+            interactive: true  
+    
+    whereIsAStreetLight:
+        data: {source: whereIsAStreetLight}
+        filter: { $zoom: { min: 12 } }
+        draw:
+          points:
+            style: whereIsAStreetLight
+            #order: 361
+            #color: yellow
+            size: 36px
+            interactive: true
+
+    accidentsPerCell:
+        data: { source: accidentsPerCell }
+        filter: { $zoom: { max: 12 } }
+        #filter:
+        #    Total number of accidents: { min: 0, max: 3 } 
+        draw:
+          polygons:
+            style: dangerZones 
+            #order: 360
+            color: rgba(255, 255, 255, 0.4)
+            interactive: true
+        lessthan3:
+            filter:
+                Total number of accidents: { min: 0, max: 4 } 
+            draw:
+             polygons:
+                style: dangerZones 
+                #order: 360
+                color: rgba(77, 172, 38, 0.4)
+                interactive: true            
+        morethan3:
+            filter:
+                Total number of accidents: { min: 4, max: 7 } 
+            draw:
+             polygons:
+                style: dangerZones 
+                #order: 360
+                color: rgba(184, 225, 134, 0.4)
+                interactive: true                            
+        morethan6:
+            filter:
+                Total number of accidents: { min: 7, max: 13 } 
+            draw:
+             polygons:
+                style: dangerZones 
+                #order: 360
+                color: rgba(255, 128, 128, 0.4)
+                interactive: true                                            
+        morethan12:
+            filter:
+                Total number of accidents: { min: 13, max: 22 } 
+            draw:
+             polygons:
+                style: dangerZones 
+                #order: 360
+                color: rgba(255, 64, 64, 0.4)
+                interactive: true
+        morethan21:
+            filter:
+                Total number of accidents: { min: 22, max: 88 } #always one more in max:
+            draw:
+             polygons:
+                style: dangerZones 
+                #order: 360
+                color: rgba(255, 0, 0, 0.4)
+                interactive: true                                    
