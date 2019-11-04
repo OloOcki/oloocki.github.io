@@ -27,7 +27,7 @@ styles:
         base: points
         blend: overlay
         blend_order: 364
-        texture: img/streetLight.png
+        texture: img/streetLightnew.png
     mostDangerousRoadJunctions:
         base: points
         blend: overlay
