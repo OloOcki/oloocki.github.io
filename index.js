@@ -38,11 +38,10 @@ map.setView([52.5200, 13.4050], 12);
 
 //add Center of Berlin as marker
 
-/*
 var centerBerlin = {lat: 52.5200, lng: 13.4050}
 var punkt = L.marker([centerBerlin.lat, centerBerlin.lng]);
 punkt.addTo(map);
-*/
+
 
 //Add maintanance locations
 function DisplayEV(){
