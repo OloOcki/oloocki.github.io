@@ -45,38 +45,38 @@ sources:
         url: https://xyz.api.here.com/tiles/osmbase/256/all/{z}/{x}/{y}.mvt
         max_zoom: 16
         url_params:
-            access_token: 'AAFBOOBWSaa6qM4XCBz-sgA'
+            access_token: 'AFgtnKKCSqm4ulfb-kXPEwA'
 
     mostDangerousRoadJunctions:
-        url: https://xyz.api.here.com/hub/spaces/TxMfFToA/tile/web/{z}_{x}_{y}
+        url: https://xyz.api.here.com/hub/spaces/xOCBhaZp/tile/web/{z}_{x}_{y}
         type: GeoJSON
         url_params:
-            access_token: 'AAFBOOBWSaa6qM4XCBz-sgA'
+            access_token: 'AFgtnKKCSqm4ulfb-kXPEwA'
 
     slowDown:
-        url: https://xyz.api.here.com/hub/spaces/g39QDkqy/tile/web/{z}_{x}_{y} 
+        url: https://xyz.api.here.com/hub/spaces/RokXEFZw/tile/web/{z}_{x}_{y} 
         type: GeoJSON
         url_params:
-            access_token: 'AAFBOOBWSaa6qM4XCBz-sgA'
+            access_token: 'AFgtnKKCSqm4ulfb-kXPEwA'
 
     callTheWinterMaintanance:
-        url: https://xyz.api.here.com/hub/spaces/p4jlTjuS/tile/web/{z}_{x}_{y}
+        url: https://xyz.api.here.com/hub/spaces/NtkmLRIZ/tile/web/{z}_{x}_{y}
         type: GeoJSON
         url_params:
-            access_token: 'AAFBOOBWSaa6qM4XCBz-sgA' 
+            access_token: 'AFgtnKKCSqm4ulfb-kXPEwA' 
 
     whereIsAStreetLight:
-        url: https://xyz.api.here.com/hub/spaces/BZrv6KYb/tile/web/{z}_{x}_{y} 
+        url: https://xyz.api.here.com/hub/spaces/ZeC9FdTU/tile/web/{z}_{x}_{y} 
         type: GeoJSON
         url_params:
-            access_token: 'AAFBOOBWSaa6qM4XCBz-sgA'
+            access_token: 'AFgtnKKCSqm4ulfb-kXPEwA'
 
     accidentsPerCell:
-        url: https://xyz.api.here.com/hub/spaces/JhsAxN6a/tile/web/{z}_{x}_{y}
+        url: https://xyz.api.here.com/hub/spaces/4RIPxoLf/tile/web/{z}_{x}_{y}
         type: GeoJSON
         url_params:
-            access_token: 'AAFBOOBWSaa6qM4XCBz-sgA' 
-
+            access_token: 'AFgtnKKCSqm4ulfb-kXPEwA'
+            
 
 layers:
     earth:
@@ -192,7 +192,7 @@ layers:
         data: { source: accidentsPerCell }
         filter: { $zoom: { max: 12 } }
         #filter:
-        #    Total number of accidents: { min: 0, max: 3 } 
+        #    Totalnumberofaccidents: { min: 0, max: 3 } 
         draw:
           polygons:
             style: dangerZones 
@@ -201,7 +201,7 @@ layers:
             interactive: true
         lessthan3:
             filter:
-                Total number of accidents: { min: 0, max: 4 } 
+                Totalnumberofaccidents: { min: 0, max: 4 } 
             draw:
              polygons:
                 style: dangerZones 
@@ -210,7 +210,7 @@ layers:
                 interactive: true            
         morethan3:
             filter:
-                Total number of accidents: { min: 4, max: 7 } 
+                Totalnumberofaccidents: { min: 4, max: 7 } 
             draw:
              polygons:
                 style: dangerZones 
@@ -219,7 +219,7 @@ layers:
                 interactive: true                            
         morethan6:
             filter:
-                Total number of accidents: { min: 7, max: 13 } 
+                Totalnumberofaccidents: { min: 7, max: 13 } 
             draw:
              polygons:
                 style: dangerZones 
@@ -228,7 +228,7 @@ layers:
                 interactive: true                                            
         morethan12:
             filter:
-                Total number of accidents: { min: 13, max: 22 } 
+                Totalnumberofaccidents: { min: 13, max: 22 } 
             draw:
              polygons:
                 style: dangerZones 
@@ -237,10 +237,67 @@ layers:
                 interactive: true
         morethan21:
             filter:
-                Total number of accidents: { min: 22, max: 88 } #always one more in max:
+                Totalnumberofaccidents: { min: 22, max: 88 } #always one more in max:
             draw:
              polygons:
                 style: dangerZones 
                 #order: 360
                 color: rgba(255, 0, 0, 0.4)
-                interactive: true                                    
+                interactive: true                
+
+    accidentsPerCell2:
+        data: { source: accidentsPerCell }
+        filter: { $zoom: { min: 12, max: 15 } }
+        #filter:
+        #    Totalnumberofaccidents: { min: 0, max: 3 } 
+        draw:
+          polygons:
+            style: dangerZones 
+            #order: 360
+            color: rgba(255, 255, 255, 0.1)
+            interactive: true
+        lessthan3:
+            filter:
+                Totalnumberofaccidents: { min: 0, max: 4 } 
+            draw:
+             polygons:
+                style: dangerZones 
+                #order: 360
+                color: rgba(77, 172, 38, 0.1)
+                interactive: true            
+        morethan3:
+            filter:
+                Totalnumberofaccidents: { min: 4, max: 7 } 
+            draw:
+             polygons:
+                style: dangerZones 
+                #order: 360
+                color: rgba(184, 225, 134, 0.1)
+                interactive: true                            
+        morethan6:
+            filter:
+                Totalnumberofaccidents: { min: 7, max: 13 } 
+            draw:
+             polygons:
+                style: dangerZones 
+                #order: 360
+                color: rgba(255, 128, 128, 0.1)
+                interactive: true                                            
+        morethan12:
+            filter:
+                Totalnumberofaccidents: { min: 13, max: 22 } 
+            draw:
+             polygons:
+                style: dangerZones 
+                #order: 360
+                color: rgba(255, 64, 64, 0.1)
+                interactive: true
+        morethan21:
+            filter:
+                Totalnumberofaccidents: { min: 22, max: 88 } #always one more in max:
+            draw:
+             polygons:
+                style: dangerZones 
+                #order: 360
+                color: rgba(255, 0, 0, 0.1)
+                interactive: true                                                
