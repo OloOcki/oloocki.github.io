@@ -3,13 +3,14 @@ body {
    border: 0px;
    padding: 0px;
    font-family: sans-serif;
-   color: black;
+   color: rgb(255, 192, 0);
 }
 
 #map {
    height: 100%;
    width: 100%;
    position: absolute;
+   cursor: default;
 }
 
 #control {
@@ -18,7 +19,213 @@ body {
    position: absolute;
    top: 0;
    left: 0;
-   background-color: gray;
+   background-color:rgba(8, 8, 1, 0.5);
    z-index: 1000;
    padding: 0px;
 }
+
+/* Titel */
+.titel{
+  display: inline-block;
+  width: 100%;
+  height: 100px;
+  margin: 0px 0px 50px 0px;
+}
+
+#titel-image neg {
+  color:  rgb(255, 192, 0);
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: larger;
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  font-family: sans-serif;
+}
+
+#titel-image img {
+  width: 300px;
+  height: 100px;
+}
+
+/* Credentials */
+
+#credentials {
+  color: rgb(173, 131, 2);
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  font-size: small;
+  position: absolute;
+  bottom: 0px;
+  left: 10px;
+  font-family: sans-serif;
+  cursor: default;
+}
+
+/*Polygon button, not functional yet*/
+.button-polygon {
+  background-image: linear-gradient(to right, red , green);
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  position: absolute;
+  border-radius: 5px;
+  bottom: 220px;
+  left: 15px;
+}
+
+.button-polygon:hover {
+  opacity: 1
+}
+
+
+
+/* Point Buttons */
+.button {
+  display: inline-block;
+  height: 100px;
+  width: 100px;
+  border: 0.5px solid #EA0000;
+  border-radius: 5px;
+  margin: 10px 10px 10px 10px;
+  color:  rgb(255, 255, 255);
+  text-align: center;
+  
+}
+
+b {
+  color:  rgb(255, 255, 255);
+  text-decoration: none;
+  letter-spacing: 1px;
+  font-size: .8em;
+  vertical-align: -30px;
+}
+
+a {
+  width: 100%;
+  height: 100%;
+  background: rgb(255, 255, 255);
+  left: -200px;
+  position: absolute;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .35s ease-Out;
+  bottom: 0;
+}
+/*button winterDienst*/
+#button-winter {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#button-winter a {
+  position: absolute;
+  left: 0;
+  transition: all .35s ease-Out;
+}
+
+#button-winter img {
+  width: auto;
+  height: auto;
+}
+
+#button-winter:hover b {
+  left: 0;
+  
+}
+
+#button-winter:hover a {
+  left: 150;
+}
+/*button dangerJunctions*/
+#button-junctions {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#button-junctions a {
+  position: absolute;
+  left: 0;
+  transition: all .35s ease-Out;
+}
+
+#button-junctions img {
+  width: auto;
+  height: auto;
+}
+
+#button-junctions:hover b {
+  left: 0;
+  
+}
+
+#button-junctions:hover a {
+  left: 150;
+}
+
+/*button streetLight*/
+#button-light {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#button-light a {
+  position: absolute;
+  left: 0;
+  transition: all .35s ease-Out;
+}
+
+#button-light img {
+  width: auto;
+  height: auto;
+}
+
+#button-light:hover b {
+  left: 0;
+  
+}
+
+#button-light:hover a {
+  left: 150;
+}
+
+/*button slowDown*/
+#button-slow {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#button-slow a {
+  position: absolute;
+  left: 0;
+  transition: all .35s ease-Out;
+}
+
+#button-slow img {
+  width: auto;
+  height: auto;
+}
+
+#button-slow:hover b {
+  left: 0;
+  
+}
+
+#button-slow:hover a {
+  left: 150;
+}
+
