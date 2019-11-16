@@ -1,7 +1,8 @@
 // credentials to here
 const here = {
    id: 'Kaj60PEbsgRNPKhvGRoW',
-   code: 'vb_hoxXseLgJfIbO9Q7gJA'
+   code: 'vb_hoxXseLgJfIbO9Q7gJA',
+   apikey: 'U85dP15GeBxEEK3215NWQa1JqbiXWR1nzBypg4YdrLA'
 };
 
 
@@ -9,12 +10,16 @@ const here = {
 //{lat: 52.5200, lng: 13.4050} //Berlin coordinates
 //var mode = 'solar';
 
+//add contributors to icon:
+//<a href="http://www.onlinewebfonts.com">oNline Web Fonts</a>
 
+
+//change popups for hover for polygons
 
 var map = L.map('map', { boxZoom: false });
 var layer = Tangram.leafletLayer({
    scene: 'scene.yaml',
-   attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>',
+   attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a> | &copy; OnlineWebFonts | ',
    events: {
       click: function (selection) {
             if (selection.feature) {
@@ -39,17 +44,37 @@ map.setView([52.5200, 13.4050], 12);
 //add Center of Berlin as marker
 
 var centerBerlin = {lat: 52.5200, lng: 13.4050}
-var punkt = L.marker([centerBerlin.lat, centerBerlin.lng]);
-punkt.addTo(map);
+//var punkt = L.marker([centerBerlin.lat, centerBerlin.lng]);
+//punkt.addTo(map);
 
+//
+/*
+###### Services locations #######
+*/
+//Icon styling
+var myIcon = L.icon({
+   iconUrl: 'icons/ambulance.png',
+   iconSize: [38, 38],
+   iconAnchor: [22, 94],
+   popupAnchor: [-3, -76],
+   shadowSize: [68, 95],
+   shadowAnchor: [22, 94]
+});
+
+
+//Other possibilities for "name":
+//       Ambulance Services
+//       Police Station 
+//       Road Assistance
+//https://developer.here.com/documentation/places/dev_guide/topics/place_categories/category-700-business-services.html#category-7300-police-fire-emergency
 
 //Add maintanance locations
-function DisplayEV(){
+function addAuthoritiesPlace(){
    let params = {
      "app_id": 'Kaj60PEbsgRNPKhvGRoW',
      "app_code": 'vb_hoxXseLgJfIbO9Q7gJA',
-     "in":  centerBerlin.lat + ',' + centerBerlin.lng +";r=1000000",       // meters
-     "cat": "toilet-rest-area",
+     "in":  centerBerlin.lat + ',' + centerBerlin.lng +";r=100000",       // meters
+     "name": "Ambulance Services",
      "size": "50000"
    }
 
@@ -77,13 +102,95 @@ function DisplayEV(){
    })
  }
  function addMarker(newpos, html){
-   ev_marker = L.marker([newpos.lat, newpos.lng])
+   ev_marker = L.marker([newpos.lat, newpos.lng], {icon: myIcon})
    ev_marker.addTo(map)
  }
  
- DisplayEV()
+ addAuthoritiesPlace()
+
+//****************Routing*********************
+var platform = new H.service.Platform({ apikey: here.apikey });
+//
+var router = platform.getRoutingService();
 
 
+//routing parameters
+var myStart = centerBerlin.lat + ',' + centerBerlin.lng
+var routingParams = {
+  'mode': 'fastest;car;traffic:enabled',
+  'start': myStart,
+  'range': '600', // 10 (10x60secs) minutes of driving 
+  'rangetype': 'time'
+}
+
+// Define a callback function to process the isoline response.
+var onResult = function(result) {
+   var center = new H.geo.Point(
+     result.response.center.latitude,
+     result.response.center.longitude),
+   isolineCoords = result.response.isoline[0].component[0].shape,
+   isolinePolygon,
+   isolineCenter
+ 
+
+   // Create a polygon and a marker representing the isoline:
+   //43.2323, 12.2312, 44.32112, 13.13213 --> [[43.2323, 12.2312], [44.32112, 13.13213],...]
+   var lista1 = isolineCoords.toString()
+   var string = lista1.split(',');
+
+   // Create array of float for each pair of coordinate
+   var a = string.length;
+   for (i = 0; i < a; i++) {
+      string[i] = parseFloat(string[i]);
+   }
+
+   // Initialize an array to store the new values
+   var b = string.length / 2;
+   var array = [];
+   for (i = 0; i < b; i++) {
+      array[i] = [0, 0];
+   }
+
+   // Create an array of array of coordinates
+   var k = 0;
+   for (i = 0; i < b; i++) {
+      for (j = 0; j < 2; j++) {
+         array[i][j] = string[k];
+         k++;
+      }
+   }
+   
+   // Add the polygon and marker to the map:
+   isolineCenter = L.marker([center.lat, center.lng])
+   isolineCenter.addTo(map)
+
+   isolinePolygon = L.polygon(array)
+   isolinePolygon.addTo(map)
+ 
+    
+   // Center and zoom the map so that the whole isoline polygon is
+   // in the viewport:
+  //map.getViewModel().setLookAtData({bounds: isolinePolygon.getBoundingBox()})
+ }
+
+
+ // Call the Routing API to calculate an isoline:
+router.calculateIsoline(
+   routingParams,
+   onResult,
+   function(error) {
+   alert(error.message)
+   }
+ );
+
+//**********Layers on & off********** */
+/*
+function toggle(layerName) {
+   layer.scene.config.layers["_" + layerName].enabled = !layer.scene.config.layers["_" + layerName].enabled;
+   document.getElementById(layerName).className = layer.scene.config.layers["_" + layerName].enabled ? "on" : "off";
+   layer.scene.updateConfig();
+}
+*/
 
 // popups
 var popup = L.popup({closeButton: false});
