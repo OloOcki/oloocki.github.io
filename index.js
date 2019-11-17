@@ -5,7 +5,18 @@ const here = {
    apikey: 'U85dP15GeBxEEK3215NWQa1JqbiXWR1nzBypg4YdrLA'
 };
 
+/* 
 
+
+GENERAL IDEAS:
+
+-> MAKE LABELS ON MAP
+-> DRAGGABLE PIN TO ROUTING CALC
+-> GEOSEARCHING FOR USER
+-> WEATHER API
+
+
+*/
 //map init
 //{lat: 52.5200, lng: 13.4050} //Berlin coordinates
 //var mode = 'solar';
@@ -113,6 +124,20 @@ var platform = new H.service.Platform({ apikey: here.apikey });
 //
 var router = platform.getRoutingService();
 
+isolineCenter = L.marker([centerBerlin.lat, centerBerlin.lng], {draggable: true})
+isolineCenter.addTo(map)
+
+//var mode = 'start'
+//var coord = centerBerlin.lat + ',' + centerBerlin.lng
+
+isolineCenter.on('dragend', function(ev) 
+{
+   var coord = ev.target.getLatLng();
+   //var mode = 'change'
+   //check(coord, mode)
+   //window.alert([latlng.lat, latlng.lng]) 
+   
+});
 
 //routing parameters
 var myStart = centerBerlin.lat + ',' + centerBerlin.lng
@@ -161,9 +186,16 @@ var onResult = function(result) {
    }
    
    // Add the polygon and marker to the map:
-   isolineCenter = L.marker([center.lat, center.lng])
+/*   isolineCenter = L.marker([center.lat, center.lng], {draggable: true})
    isolineCenter.addTo(map)
-
+   
+   isolineCenter.on('dragend', function(ev) 
+   {
+      var latlng = ev.target.getLatLng();
+      //window.alert([latlng.lat, latlng.lng]) 
+      
+  });*/
+   
    isolinePolygon = L.polygon(array)
    isolinePolygon.addTo(map)
  
@@ -184,13 +216,13 @@ router.calculateIsoline(
  );
 
 //**********Layers on & off********** */
-/*
+
 function toggle(layerName) {
    layer.scene.config.layers["_" + layerName].enabled = !layer.scene.config.layers["_" + layerName].enabled;
    document.getElementById(layerName).className = layer.scene.config.layers["_" + layerName].enabled ? "on" : "off";
    layer.scene.updateConfig();
 }
-*/
+
 
 // popups
 var popup = L.popup({closeButton: false});
