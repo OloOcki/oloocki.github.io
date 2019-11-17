@@ -12,6 +12,45 @@ body {
    position: absolute;
    cursor: default;
 }
+/*Toggleable buttons*/
+  #navigate {
+   position: absolute;
+   bottom: 220px;
+   left: 15px;
+   z-index: 1001;
+   background-color:rgba(8, 8, 1, 0.0);
+   /* display: none; */
+   width: 230px;
+   height: 50px;
+   border-radius: 6px;
+}
+
+  #navigate div {
+   margin: 10px;
+   padding: 0.5em;
+   background-image: linear-gradient(to right, red , green);
+   border: 1px solid black;
+   border-radius: 3px;
+   color: white;
+   box-shadow: 2px 2px 2px black;
+   text-align: center;
+   border-radius: 5px;
+   cursor: pointer;
+   opacity: 1;
+   transition: 0.15s;
+}
+
+  #navigate div.off {
+   opacity: 0.5;
+   color: gray;
+}
+
+#navigate div:hover {
+   margin: 10px;
+   padding: 0.5em;
+   color: white;
+   box-shadow: 4px 4px 4px black;
+}
 
 #control {
    width: 300px;
@@ -60,30 +99,6 @@ body {
   left: 10px;
   font-family: sans-serif;
   cursor: default;
-}
-
-/*Polygon button, not functional yet*/
-.button-polygon {
-  background-image: linear-gradient(to right, red , green);
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  font-size: 16px;
-  margin: 4px 2px;
-  opacity: 0.6;
-  transition: 0.3s;
-  display: inline-block;
-  text-decoration: none;
-  cursor: pointer;
-  position: absolute;
-  border-radius: 5px;
-  bottom: 220px;
-  left: 15px;
-}
-
-.button-polygon:hover {
-  opacity: 1
 }
 
 
