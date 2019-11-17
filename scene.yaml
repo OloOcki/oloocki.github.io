@@ -144,7 +144,7 @@ layers:
                     style: buildingsStyle
                     extrude: function () { return feature.height > 20 || $zoom >= 16; }
 
-    mostDangerousRoadJunctions:
+    _mostDangerousRoadJunctions:
         data: {source: mostDangerousRoadJunctions}
         filter: { $zoom: { min: 12 } }
         draw:
@@ -155,7 +155,7 @@ layers:
             size: 36px
             interactive: true
 
-    slowDown:
+    _slowDown:
         data: {source: slowDown}
         filter: { $zoom: { min: 12 } }
         draw:
@@ -166,7 +166,7 @@ layers:
             size: 36px
             interactive: true  
     
-    callTheWinterMaintanance:
+    _callTheWinterMaintanance:
         data: {source: callTheWinterMaintanance}
         filter: { $zoom: { min: 12 } }
         draw:
@@ -177,7 +177,7 @@ layers:
             size: 36px
             interactive: true  
     
-    whereIsAStreetLight:
+    _whereIsAStreetLight:
         data: {source: whereIsAStreetLight}
         filter: { $zoom: { min: 12 } }
         draw:
@@ -188,116 +188,40 @@ layers:
             size: 36px
             interactive: true
 
-    accidentsPerCell:
+    _accidentsPerCell:
         data: { source: accidentsPerCell }
-        filter: { $zoom: { max: 12 } }
+        filter: { $zoom: { max: 15 } }
         #filter:
         #    Totalnumberofaccidents: { min: 0, max: 3 } 
         draw:
           polygons:
             style: dangerZones 
             #order: 360
-            color: rgba(255, 255, 255, 0.4)
-            interactive: true
-        lessthan3:
-            filter:
-                Totalnumberofaccidents: { min: 0, max: 4 } 
-            draw:
-             polygons:
-                style: dangerZones 
-                #order: 360
-                color: rgba(77, 172, 38, 0.4)
-                interactive: true            
-        morethan3:
-            filter:
-                Totalnumberofaccidents: { min: 4, max: 7 } 
-            draw:
-             polygons:
-                style: dangerZones 
-                #order: 360
-                color: rgba(184, 225, 134, 0.4)
-                interactive: true                            
-        morethan6:
-            filter:
-                Totalnumberofaccidents: { min: 7, max: 13 } 
-            draw:
-             polygons:
-                style: dangerZones 
-                #order: 360
-                color: rgba(255, 128, 128, 0.4)
-                interactive: true                                            
-        morethan12:
-            filter:
-                Totalnumberofaccidents: { min: 13, max: 22 } 
-            draw:
-             polygons:
-                style: dangerZones 
-                #order: 360
-                color: rgba(255, 64, 64, 0.4)
-                interactive: true
-        morethan21:
-            filter:
-                Totalnumberofaccidents: { min: 22, max: 88 } #always one more in max:
-            draw:
-             polygons:
-                style: dangerZones 
-                #order: 360
-                color: rgba(255, 0, 0, 0.4)
-                interactive: true                
+            color: |
+                    function() {
+                        if ($zoom >= 12 && $zoom < 15) { 
+                        var value = feature.Totalnumberofaccidents;
+                        var color = value <= 4 ? "rgba(77, 172, 38, 0.1)" :
+                                    value <= 7 ? "rgba(184, 225, 134, 0.1)" :
+                                    value <= 13 ? "rgba(255, 128, 128, 0.1)" :
+                                    value <= 22 ? "rgba(255, 64, 64, 0.1)" :
+                                    value <= 88 ? "rgba(255, 0, 0, 0.1)" :
+                                    "rgba(255, 247, 236, 0.3)";
 
-    accidentsPerCell2:
-        data: { source: accidentsPerCell }
-        filter: { $zoom: { min: 12, max: 15 } }
-        #filter:
-        #    Totalnumberofaccidents: { min: 0, max: 3 } 
-        draw:
-          polygons:
-            style: dangerZones 
-            #order: 360
-            color: rgba(255, 255, 255, 0.1)
+                                    return color;
+                        }
+                        else {
+                        var value = feature.Totalnumberofaccidents;
+                        var color = value <= 4 ? "rgba(100, 172, 38, 0.4)" :
+                                    value <= 7 ? "rgba(184, 225, 134, 0.4)" :
+                                    value <= 13 ? "rgba(255, 128, 128, 0.4)" :
+                                    value <= 22 ? "rgba(255, 64, 64, 0.4)" :
+                                    value <= 88 ? "rgba(255, 0, 0, 0.4)" :
+                                    "rgba(255, 247, 236, 0.3)";
+
+                                    return color;
+                        }                     
+                        
+                    }
             interactive: true
-        lessthan3:
-            filter:
-                Totalnumberofaccidents: { min: 0, max: 4 } 
-            draw:
-             polygons:
-                style: dangerZones 
-                #order: 360
-                color: rgba(77, 172, 38, 0.1)
-                interactive: true            
-        morethan3:
-            filter:
-                Totalnumberofaccidents: { min: 4, max: 7 } 
-            draw:
-             polygons:
-                style: dangerZones 
-                #order: 360
-                color: rgba(184, 225, 134, 0.1)
-                interactive: true                            
-        morethan6:
-            filter:
-                Totalnumberofaccidents: { min: 7, max: 13 } 
-            draw:
-             polygons:
-                style: dangerZones 
-                #order: 360
-                color: rgba(255, 128, 128, 0.1)
-                interactive: true                                            
-        morethan12:
-            filter:
-                Totalnumberofaccidents: { min: 13, max: 22 } 
-            draw:
-             polygons:
-                style: dangerZones 
-                #order: 360
-                color: rgba(255, 64, 64, 0.1)
-                interactive: true
-        morethan21:
-            filter:
-                Totalnumberofaccidents: { min: 22, max: 88 } #always one more in max:
-            draw:
-             polygons:
-                style: dangerZones 
-                #order: 360
-                color: rgba(255, 0, 0, 0.1)
-                interactive: true                                                
+
