@@ -53,10 +53,14 @@ layer.addTo(map);
 map.setView([52.5200, 13.4050], 12);
 
 //add Center of Berlin as marker
-
 var centerBerlin = {lat: 52.5200, lng: 13.4050}
 //var punkt = L.marker([centerBerlin.lat, centerBerlin.lng]);
 //punkt.addTo(map);
+
+//####### Init global  #######
+const servicesLocations = [];
+
+//
 
 //
 /*
@@ -115,6 +119,7 @@ function addAuthoritiesPlace(){
  function addMarker(newpos, html){
    ev_marker = L.marker([newpos.lat, newpos.lng], {icon: myIcon})
    ev_marker.addTo(map)
+   servicesLocations.push([newpos.lat, newpos.lng])
  }
  
  addAuthoritiesPlace()
@@ -123,7 +128,7 @@ function addAuthoritiesPlace(){
 var platform = new H.service.Platform({ apikey: here.apikey });
 //
 var router = platform.getRoutingService();
-
+/*
 isolineCenter = L.marker([centerBerlin.lat, centerBerlin.lng], {draggable: true})
 isolineCenter.addTo(map)
 
@@ -138,6 +143,30 @@ isolineCenter.on('dragend', function(ev)
    //window.alert([latlng.lat, latlng.lng]) 
    
 });
+*/
+
+//     MAKE DOUBLE CLICK ON A HOSPITAL ETC. AND THEN CALCULATE ISOLINE -> ISOLINE AS ASYNC FUNCTION
+function onMapClick(e) {
+   for (i=0; i < servicesLocations.length; i++)
+   {  
+   
+   //if event click latlng == servicesLocations latlng i then show popup -> then trigger isoline function
+   
+
+   //servicesLocationsNew = {lat: ev_marker.items.length[i].position[0], lng: ev_marker.items.length[i].position[1]}
+
+   alert("You clicked the map at " + i)
+   /*if (e.latlng == [markerLoop.lat, markerLoop.lng]) {
+   alert("You clicked the map at " + e.latlng);
+   }
+   else {
+      alert("You clicked the map at wrong place ")
+      }*/
+      //alert("You clicked the map at " + servicesLocations)
+   }
+}
+
+map.on('click', onMapClick);
 
 //routing parameters
 var myStart = centerBerlin.lat + ',' + centerBerlin.lng
