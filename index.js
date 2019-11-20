@@ -148,21 +148,27 @@ isolineCenter.on('dragend', function(ev)
 //     MAKE DOUBLE CLICK ON A HOSPITAL ETC. AND THEN CALCULATE ISOLINE -> ISOLINE AS ASYNC FUNCTION
 function onMapClick(e) {
    for (i=0; i < servicesLocations.length; i++)
-   {  
+   {
+
+      //create temp var to compare coordinates of event vs. values of input layer
+      compServLoca = L.latLng(servicesLocations[i])
+
+      alert(e.latlng)
+      alert(compServLoca)
+
+      if (latlng1.equals(latlng2)){
+         alert("OK!")
+      }
+      else {
+         alert("it is not the right object")
+      }
+
+      //alert(e.latlng)
+      //alert(compServLoca)
+      //alert(servicesLocations[i])  
    
    //if event click latlng == servicesLocations latlng i then show popup -> then trigger isoline function
-   
 
-   //servicesLocationsNew = {lat: ev_marker.items.length[i].position[0], lng: ev_marker.items.length[i].position[1]}
-
-   alert("You clicked the map at " + i)
-   /*if (e.latlng == [markerLoop.lat, markerLoop.lng]) {
-   alert("You clicked the map at " + e.latlng);
-   }
-   else {
-      alert("You clicked the map at wrong place ")
-      }*/
-      //alert("You clicked the map at " + servicesLocations)
    }
 }
 
