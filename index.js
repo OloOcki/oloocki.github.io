@@ -152,11 +152,14 @@ function onMapClick(e) {
 
       //create temp var to compare coordinates of event vs. values of input layer
       compServLoca = L.latLng(servicesLocations[i])
+      compEvenLoca = e.latlng
 
-      alert(e.latlng)
-      alert(compServLoca)
+      
+      //alert(e.latlng)
+      //alert(compServLoca)
+      //https://stackoverflow.com/questions/16202968/using-leaflet-mapping-api-how-do-you-determine-which-point-in-a-polyline-was-cl
 
-      if (latlng1.equals(latlng2)){
+      if (compEvenLoca.equals(compServLoca, 0.1)){
          alert("OK!")
       }
       else {
