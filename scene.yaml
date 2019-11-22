@@ -1,3 +1,25 @@
+global:
+    language: en
+    language_text_source: |
+        function() {
+            return (global.language && feature['name:'+global.language]) || feature.name;
+        }
+    sort_rank: |
+        function() {
+            return (feature.sort_rank)
+            }
+
+fonts:
+    FiraGo:
+        - weight: 400
+          url: https://assets.vector.hereapi.com/fonts/FiraGO-Regular.ttf
+        - weight: 400
+        - style: italics
+          url: https://assets.vector.hereapi.com/fonts/FiraGO-Italic.ttf
+        - weight: 500
+          url: https://assets.vector.hereapi.com/fonts/FiraGO-Medium.ttf            
+
+
 cameras:
     camera1:
         type: isometric
@@ -99,6 +121,21 @@ layers:
             polygons:
                 order: function() { return feature.sort_rank; }
                 color: '#1d1d1f'
+        label:
+            filter:
+                - $zoom: { min: 15}
+            draw:
+                text:
+                    font:
+
+                        text_source: global.language_text_source
+                        family: FiraGo
+                        size: 16
+                        order: function() { return feature.sort_rank + 1; }
+                        priority: 15
+                        fill: '#999999'
+                        stroke: {color: [0.078, 0.078, 0.078, 1.00], width: 2
+                        }        
 
     roads:
         data: { source: xyz_osm }
@@ -143,6 +180,304 @@ layers:
                 polygons:
                     style: buildingsStyle
                     extrude: function () { return feature.height > 20 || $zoom >= 16; }
+        #continent labels
+    earth_layer_land_label:
+        data: { source: xyz_osm , layer: earth}
+        filter:
+            all:
+            - kind: continent
+            not:
+                - kind: island
+        draw:
+            text:
+                text_source: global.language_text_source
+                font:
+                    family: FiraGo
+                    weight: 400
+                    fill: '#f4f4f4'
+                    size: 30
+                    priority: 1
+
+
+    country:
+        data: { source: xyz_osm , layer: places}
+        filter:
+            all:
+            - kind: country
+        draw:
+            text:
+                text_source: global.language_text_source
+                text_wrap: 30
+                priority: 10
+                font:
+                    family: FiraGo
+                    size: [
+                        [1, 8],
+                        [2, 10],
+                        [3, 12],
+                        [4, 14],
+                        [5, 16]
+                        ]
+                    fill: '#ffffff'
+                    stroke: {
+                        color: [0.000, 0.000, 0.000, 0.50],
+                        width: 1.5px
+                        }
+                    transform: uppercase
+                    weight: 400
+
+
+    locality_10million_capital:
+        data: { source: xyz_osm , layer: places}
+        filter: function() { return ((((feature.kind == 'locality' )&& feature.population) && (feature.population > 10000000 || feature.country_capital))&& feature.country_capital)}
+        draw:
+            text:
+                text_source: global.language_text_source
+                text_wrap: 30
+                priority: 39
+                font:
+                    family: FiraGo
+                    weight: bold
+                    size: [
+                        [1, 9.6],
+                        [2, 11.2],
+                        [3, 12.8],
+                        [4, 14.4],
+                        [5, 16],
+                        [6, 19.2],
+                        [7, 22.4],
+                        [8, 25.6],
+                        [9, 28.8],
+                        [10, 32]
+                        ]
+                    fill: '#ffffff'
+                    stroke: {
+                        color: [0.000, 0.000, 0.000, 0.50],
+                        width: [
+                            [4, 2],
+                            [6, 3],
+                            [10, 6],
+                            [12, 8]
+                        ]
+                        }
+    locality_10million:
+        data: { source: xyz_osm , layer: places}
+        filter: function() { return ((feature.kind == 'locality' && feature.population) && (feature.population > 10000000 || feature.country_capital))}
+        draw:
+            text:
+                text_source: global.language_text_source
+                text_wrap: 30
+                priority: 39
+                font:
+                    size: [
+                        [1, 9.6],
+                        [2, 11.2],
+                        [3, 12.8],
+                        [4, 14.4],
+                        [5, 16],
+                        [6, 19.2],
+                        [7, 22.4],
+                        [8, 25.6],
+                        [9, 28.8],
+                        [10, 32]
+                        ]
+                    family: FiraGO
+                    fill: '#ffffff'
+                    stroke: {
+                        color: [0.000, 0.000, 0.000, 0.50],
+                        width: [
+                            [4, 1.5],
+                            [6, 2],
+                            [10, 4],
+                            [12, 5]
+                        ]
+                        }
+
+    locality_label_1million:
+        data: { source: xyz_osm , layer: places}
+        filter: function() { return (feature.kind = 'locality' && feature.population && (feature.region_capital || feature.population > 1000000))}
+        draw:
+            text:
+                text_source: global.language_text_source
+                text_wrap: 30
+                priority: 40
+                font:
+                    size: [
+                        [2, 9.6],
+                        [3, 11.2],
+                        [4, 12.8],
+                        [5, 14.4],
+                        [6, 16],
+                        [7, 19.2],
+                        [8, 22.4],
+                        [9, 25.6],
+                        [10, 28.8],
+                        [11, 32]
+                        ]
+                    family: FiraGO
+                    fill: '#ffffff'
+                    stroke: {
+                        color: [0.000, 0.000, 0.000, 0.50],
+                        width: [
+                            [2, 1],
+                            [4, 1.5],
+                            [6, 2],
+                            [10, 4],
+                            [12, 5]
+                        ]
+                        }
+
+
+    locality_label_400k:
+        data: { source: xyz_osm , layer: places}
+        filter: function() { return (feature.kind = 'locality' && feature.population && feature.population > 400000)}
+        draw:
+            text:
+                text_source: global.language_text_source
+                text_wrap: 30
+                priority: 41
+                font:
+                    size: [
+                        [4, 11.2],
+                        [5, 12.8],
+                        [6, 16],
+                        [7, 19.2],
+                        [8, 22.4],
+                        [9, 24],
+                        [10, 25.6],
+                        [11, 27.2]
+                        ]
+                    family: FiraGO
+                    fill: '#ffffff'
+                    stroke: {
+                        color: [0.000, 0.000, 0.000, 0.50],
+                        width: [
+                            [4, 1],
+                            [6, 2],
+                            [8, 3],
+                            [10, 4],
+                            [12, 5]
+                        ]
+                        }
+
+    locality_label_100k:
+        data: { source: xyz_osm , layer: places}
+        filter:
+            all:
+                - function() { return (feature.kind = 'locality' && feature.population > 100000)}
+                - $zoom: {min: 5}
+        draw:
+            text:
+                text_source: global.language_text_source
+                text_wrap: 30
+                priority: 42
+                font:
+                    family: FiraGO
+                    weight: 400
+                    size: [
+                        [4, 9.6],
+                        [5, 11.2],
+                        [6, 12.8],
+                        [7, 16],
+                        [8, 19.2],
+                        [9, 20.8],
+                        [10, 22.4],
+                        [11, 24],
+                        [12, 25.6]
+                        ]
+                    fill: '#ffffff'
+                    stroke: {
+                        color: [0.000, 0.000, 0.000, 0.50],
+                        width: [
+                            [5, 1],
+                            [8, 3],
+                            [10, 4],
+                            [12, 5]
+                        ]
+                        }
+
+    locality_label_50k:
+        data: { source: xyz_osm , layer: places}
+        filter:
+            all:
+                - function() { return (feature.kind = 'locality' && feature.population > 50000)}
+                - $zoom: {min: 5}
+        draw:
+            text:
+                text_source: global.language_text_source
+                text_wrap: 30
+                priority: 43
+                font:
+                    family: FiraGo
+                    size: [
+                        [10, 16],
+                        [11, 19.2],
+                        [12, 22.4],
+                        [13, 24]
+                        ]
+                    fill: '#ffffff'
+                    stroke: {
+                        color: [0.000, 0.000, 0.000, 0.50],
+                        width: [
+                            [10, 2],
+                            [12, 3]
+                        ]
+                        }
+
+    locality_label_10k:
+        data: { source: xyz_osm , layer: places}
+        filter:
+            all:
+                - function() { return (feature.kind = 'locality' && feature.population > 10000)}
+                - $zoom: {min: 9}
+        draw:
+            text:
+                text_source: global.language_text_source
+                text_wrap: 30
+                priority: 44
+                font:
+                    family: FiraGo
+                    size: [
+                        [11, 16],
+                        [12, 17.6],
+                        [13, 19.2],
+                        [14, 20.8],
+                        [15, 22.4]
+                        ]
+                    fill: '#ffffff'
+                    stroke: {
+                        color: [0.000, 0.000, 0.000, 0.50],
+                        width: [
+                            [10, 2],
+                            [12, 3]
+                        ]
+                        }
+
+    locality_label:
+        data: { source: xyz_osm , layer: places}
+        filter:
+            all:
+                - function() { return (feature.kind = 'locality' && feature.population <= 10000)}
+                - $zoom: {min: 11}
+        draw:
+            text:
+                text_source: global.language_text_source
+                priority: 50
+                font:
+                    size: [
+                        [11, 12.8],
+                        [12, 14.4],
+                        [13, 16],
+                        [14, 17.6],
+                        [15, 19.2]
+                        ]
+                    family: FiraGO
+                    fill: '#ffffff'
+                    stroke: {
+                        color: [0.000, 0.000, 0.000, 0.50],
+                        width: 2px
+                        }
+    #end OSM                                    
 
     _mostDangerousRoadJunctions:
         data: {source: mostDangerousRoadJunctions}
