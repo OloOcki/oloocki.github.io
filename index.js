@@ -1,31 +1,32 @@
-// credentials to here
+/* 
+
+
+GENERAL IDEAS:
+
+-> GEOSEARCHING FOR USER
+-> WEATHER API
+-> change popups for hover for polygons + highlight polygons(?)
+
+
+*/
+
+
+/*
+
+ **********Map Initialization**********
+
+*/
+
+// credentials HERE
 const here = {
    id: 'Kaj60PEbsgRNPKhvGRoW',
    code: 'vb_hoxXseLgJfIbO9Q7gJA',
    apikey: 'U85dP15GeBxEEK3215NWQa1JqbiXWR1nzBypg4YdrLA'
 };
 
-/* 
-
-
-GENERAL IDEAS:
-
--> MAKE LABELS ON MAP
--> DRAGGABLE PIN TO ROUTING CALC
--> GEOSEARCHING FOR USER
--> WEATHER API
-
-
-*/
-//map init
-//{lat: 52.5200, lng: 13.4050} //Berlin coordinates
-//var mode = 'solar';
-
 //add contributors to icon:
 //<a href="http://www.onlinewebfonts.com">oNline Web Fonts</a>
 
-
-//change popups for hover for polygons
 
 var map = L.map('map', { boxZoom: false });
 var layer = Tangram.leafletLayer({
@@ -35,38 +36,51 @@ var layer = Tangram.leafletLayer({
       click: function (selection) {
             if (selection.feature) {
                showPopup(selection.leaflet_event.latlng, selection.feature.properties.Totalnumberofaccidents, selection.feature.properties.Numberofpedestriansinvolved,
-                  selection.feature.properties.Missingwintermaintenancenr, selection.feature.properties.Trafficcellname, selection.feature.properties.Totalnumberofaccidents, 
-                  selection.feature.properties.Accidentswithslightlyinjured, selection.feature.properties.Accidentswithseriouslyinjured, selection.feature.properties.Accidentsinvolvingfatalities,
+                  selection.feature.properties.Missingwintermaintenancenr,
                   selection.feature.properties.Mostdangerousjunctions, selection.feature.properties.Numberofmiscellaneousroadusersinvolved, selection.feature.properties.Numberofmotorcyclesinvolved,
                   selection.feature.properties.Numberofpedestriansinvolved, selection.feature.properties.Slowdownnr, selection.feature.properties.Speedlimit, selection.feature.properties.Missingstreetlightnr, 
                   selection.feature.properties.Totalnumberofinvolvedroadusers, selection.feature.properties.Numberofbicyclesinvolved, selection.feature.properties.Numberofcarsinvolved, selection.feature.properties.Numberoflorriesinvolved);
             } else {
                map.closePopup();
             }
+      },
+      hover: function (selection) {
+            if (selection.feature) {
+               showPolygonPopup(selection.leaflet_event.latlng, selection.feature.properties.Trafficcellname, selection.feature.properties.Totalnumberofaccidents, 
+                  selection.feature.properties.Accidentswithslightlyinjured, selection.feature.properties.Accidentswithseriouslyinjured, selection.feature.properties.Accidentsinvolvingfatalities);
+            } else {
+               map.closePopup();
+            }
+
       }
  
    }
 
 });
 layer.addTo(map);
-// center of Berlin
 map.setView([52.5200, 13.4050], 12);
 
-//add Center of Berlin as marker
-var centerBerlin = {lat: 52.5200, lng: 13.4050}
-//var punkt = L.marker([centerBerlin.lat, centerBerlin.lng]);
-//punkt.addTo(map);
+/*
 
-//####### Init global  #######
+ **********Global variables**********
+
+*/
+
+var centerBerlin = {lat: 52.5200, lng: 13.4050}
+//var berlinMarker = L.marker([centerBerlin.lat, centerBerlin.lng]);
+//berlinMarker.addTo(map);
+
 const servicesLocations = [];
 
-//
 
-//
 /*
-###### Services locations #######
+
+ **********HERE Places API**********
+
 */
-//Icon styling
+
+//Style your own icon for selected Places!
+
 var myIcon = L.icon({
    iconUrl: 'icons/ambulance.png',
    iconSize: [38, 38],
@@ -76,14 +90,19 @@ var myIcon = L.icon({
    shadowAnchor: [22, 94]
 });
 
+/*
 
-//Other possibilities for "name":
-//       Ambulance Services
-//       Police Station 
-//       Road Assistance
-//https://developer.here.com/documentation/places/dev_guide/topics/place_categories/category-700-business-services.html#category-7300-police-fire-emergency
+>> Check out HERE Developer page -> https://developer.here.com/documentation/places/dev_guide/topics/place_categories/category-700-business-services.html#category-7300-police-fire-emergency
+>> I.e.:
 
-//Add maintanance locations
+Other Places to select using parameter "name":
+      - Ambulance Services
+      - Police Station 
+      - Road Assistance
+      - ...
+
+*/
+
 function addAuthoritiesPlace(){
    let params = {
      "app_id": 'Kaj60PEbsgRNPKhvGRoW',
@@ -107,7 +126,6 @@ function addAuthoritiesPlace(){
      console.log(response)
      for (i=0; i < response.results.items.length; i++)
        {  
-       // resultData[i] = response.results.items[i]
 
        newpos= {lat: response.results.items[i].position[0], lng: response.results.items[i].position[1]}
 
@@ -118,8 +136,9 @@ function addAuthoritiesPlace(){
  }
  function addMarker(newpos, html){
    ev_marker = L.marker([newpos.lat, newpos.lng], {icon: myIcon})
-   ev_marker.addTo(map)
-   servicesLocations.push([newpos.lat, newpos.lng])
+   ev_marker.addTo(map).on('dblclick', onDblClick)
+   //ev_marker.off('dblclick', onDblClick)
+   //servicesLocations.push([newpos.lat, newpos.lng])
  }
  
  addAuthoritiesPlace()
@@ -128,63 +147,7 @@ function addAuthoritiesPlace(){
 var platform = new H.service.Platform({ apikey: here.apikey });
 //
 var router = platform.getRoutingService();
-/*
-isolineCenter = L.marker([centerBerlin.lat, centerBerlin.lng], {draggable: true})
-isolineCenter.addTo(map)
 
-//var mode = 'start'
-//var coord = centerBerlin.lat + ',' + centerBerlin.lng
-
-isolineCenter.on('dragend', function(ev) 
-{
-   var coord = ev.target.getLatLng();
-   //var mode = 'change'
-   //check(coord, mode)
-   //window.alert([latlng.lat, latlng.lng]) 
-   
-});
-*/
-
-//     MAKE DOUBLE CLICK ON A HOSPITAL ETC. AND THEN CALCULATE ISOLINE -> ISOLINE AS ASYNC FUNCTION
-function onMapClick(e) {
-   for (i=0; i < servicesLocations.length; i++)
-   {
-
-      //create temp var to compare coordinates of event vs. values of input layer
-      compServLoca = L.latLng(servicesLocations[i])
-      compEvenLoca = e.latlng
-
-      
-      //alert(e.latlng)
-      //alert(compServLoca)
-      //https://stackoverflow.com/questions/16202968/using-leaflet-mapping-api-how-do-you-determine-which-point-in-a-polyline-was-cl
-
-      if (compEvenLoca.equals(compServLoca, 0.1)){
-         alert("OK!")
-      }
-      else {
-         alert("it is not the right object")
-      }
-
-      //alert(e.latlng)
-      //alert(compServLoca)
-      //alert(servicesLocations[i])  
-   
-   //if event click latlng == servicesLocations latlng i then show popup -> then trigger isoline function
-
-   }
-}
-
-map.on('click', onMapClick);
-
-//routing parameters
-var myStart = centerBerlin.lat + ',' + centerBerlin.lng
-var routingParams = {
-  'mode': 'fastest;car;traffic:enabled',
-  'start': myStart,
-  'range': '600', // 10 (10x60secs) minutes of driving 
-  'rangetype': 'time'
-}
 
 // Define a callback function to process the isoline response.
 var onResult = function(result) {
@@ -198,8 +161,8 @@ var onResult = function(result) {
 
    // Create a polygon and a marker representing the isoline:
    //43.2323, 12.2312, 44.32112, 13.13213 --> [[43.2323, 12.2312], [44.32112, 13.13213],...]
-   var lista1 = isolineCoords.toString()
-   var string = lista1.split(',');
+   var list1 = isolineCoords.toString()
+   var string = list1.split(',');
 
    // Create array of float for each pair of coordinate
    var a = string.length;
@@ -223,16 +186,7 @@ var onResult = function(result) {
       }
    }
    
-   // Add the polygon and marker to the map:
-/*   isolineCenter = L.marker([center.lat, center.lng], {draggable: true})
-   isolineCenter.addTo(map)
-   
-   isolineCenter.on('dragend', function(ev) 
-   {
-      var latlng = ev.target.getLatLng();
-      //window.alert([latlng.lat, latlng.lng]) 
-      
-  });*/
+   // Add the polygon to the map:
    
    isolinePolygon = L.polygon(array)
    isolinePolygon.addTo(map)
@@ -245,15 +199,35 @@ var onResult = function(result) {
 
 
  // Call the Routing API to calculate an isoline:
-router.calculateIsoline(
-   routingParams,
-   onResult,
-   function(error) {
-   alert(error.message)
-   }
- );
 
-//**********Layers on & off********** */
+ function onDblClick(e) {
+   //alert(e.latlng.lat + ',' + e.latlng.lng);
+   //if feature clicked twice - > fire routing
+   //routing parameters
+   
+   var myStart = e.latlng.lat + ',' + e.latlng.lng
+   var routingParams = {
+   'mode': 'fastest;car;traffic:enabled',
+   'start': myStart,
+   'range': '600', // 10 (10x60secs) minutes of driving 
+   'rangetype': 'time'
+}
+
+   router.calculateIsoline(
+      routingParams,
+      onResult,
+      function(error) {
+      alert(error.message)
+      }
+    );
+
+}
+
+ /*
+
+ **********Layers on & off**********
+
+ */
 
 function toggle(layerName) {
    layer.scene.config.layers["_" + layerName].enabled = !layer.scene.config.layers["_" + layerName].enabled;
@@ -261,25 +235,18 @@ function toggle(layerName) {
    layer.scene.updateConfig();
 }
 
+ /*
 
-// popups
+ **********Popups**********
+
+ */
+
 var popup = L.popup({closeButton: false});
 
-function showPopup(latlng, Totalnumberofaccidents, Numberofpedestriansinvolved, Missingwintermaintenancenr, Trafficcellname, Totalnumberofaccidents, Accidentswithslightlyinjured,
-   Accidentswithseriouslyinjured, Accidentsinvolvingfatalities, Mostdangerousjunctions, Numberofmiscellaneousroadusersinvolved, Numberofmotorcyclesinvolved, Numberofpedestriansinvolved,
-   Slowdownnr, Speedlimit, Missingstreetlightnr, Totalnumberofinvolvedroadusers, Numberofbicyclesinvolved, Numberofcarsinvolved, Numberoflorriesinvolved) {
-   //window.alert(Totalnumberofaccidents)
+function showPolygonPopup(latlng, Trafficcellname, Totalnumberofaccidents, Accidentswithslightlyinjured,
+   Accidentswithseriouslyinjured, Accidentsinvolvingfatalities) {
 
-   //winter maintnace: Missingwintermaintenancenr
-   if (Missingwintermaintenancenr != undefined) {
-      popup
-        .setLatLng(latlng)
-        .setContent('</p><p><strong>ID: </strong>' + Missingwintermaintenancenr)
-        .openOn(map);
-   } 
-   //AccidentPerCell: Trafficcellname, Totalnumberofaccidents, Accidentswithslightlyinjured, Accidentswithseriouslyinjured, Accidentsinvolvingfatalities
-   else if(Trafficcellname != undefined && Totalnumberofaccidents != undefined && Accidentswithslightlyinjured != undefined && Accidentswithseriouslyinjured != undefined
-   && Accidentsinvolvingfatalities != undefined) {
+      if (Trafficcellname != undefined && Totalnumberofaccidents != undefined && Accidentswithslightlyinjured != undefined && Accidentswithseriouslyinjured != undefined && Accidentsinvolvingfatalities != undefined)
       popup
         .setLatLng(latlng)
         .setContent('</p><p><strong>Traffic cell name: </strong>' + Trafficcellname +
@@ -287,6 +254,18 @@ function showPopup(latlng, Totalnumberofaccidents, Numberofpedestriansinvolved, 
         '</p><p><strong>Accidents with slightly injured: </strong>' + Accidentswithslightlyinjured + 
         '</p><p><strong>Accidents with seriously injured: </strong>' + Accidentswithseriouslyinjured + 
         '</p><p><strong>Accidents involving fatalities: </strong>' + Accidentsinvolvingfatalities)
+        .openOn(map);      
+   }
+
+function showPopup(latlng, Totalnumberofaccidents, Numberofpedestriansinvolved, Missingwintermaintenancenr,
+   Mostdangerousjunctions, Numberofmiscellaneousroadusersinvolved, Numberofmotorcyclesinvolved, Numberofpedestriansinvolved,
+   Slowdownnr, Speedlimit, Missingstreetlightnr, Totalnumberofinvolvedroadusers, Numberofbicyclesinvolved, Numberofcarsinvolved, Numberoflorriesinvolved) {
+
+   //winter maintnace: Missingwintermaintenancenr
+   if (Missingwintermaintenancenr != undefined) {
+      popup
+        .setLatLng(latlng)
+        .setContent('</p><p><strong>ID: </strong>' + Missingwintermaintenancenr)
         .openOn(map);
    } 
    //Mostdangerousjunctions: Mostdangerousjunctions, Numberofmiscellaneousroadusersinvolved, Numberofmotorcyclesinvolved, Numberofpedestriansinvolved, Totalnumberofaccidents, Totalnumberofinvolvedroadusers(not yet)
@@ -320,7 +299,7 @@ function showPopup(latlng, Totalnumberofaccidents, Numberofpedestriansinvolved, 
          .openOn(map);   
    }
    else {
-      window.alert('Error')
+      //window.alert('Error')
    }
 }
 
