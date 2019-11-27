@@ -2,11 +2,7 @@
 
 
 GENERAL IDEAS:
-
--> GEOSEARCHING FOR USER
--> WEATHER API
--> change popups for hover for polygons + highlight polygons(?)
-
+-> somehow indicate this range for locations
 
 */
 
@@ -31,7 +27,7 @@ const here = {
 var map = L.map('map', { boxZoom: false });
 var layer = Tangram.leafletLayer({
    scene: 'scene.yaml',
-   attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a> | &copy; OnlineWebFonts | ',
+   attribution: '<a href="https://github.com/tangrams/tangram">Tangram</a> | &copy; OnlineWebFonts | ', 
    events: {
       click: function (selection) {
             if (selection.feature) {
@@ -71,6 +67,37 @@ var centerBerlin = {lat: 52.5200, lng: 13.4050}
 //berlinMarker.addTo(map);
 
 const servicesLocations = [];
+
+/*
+**********HERE GEOCODING************
+*/
+
+
+let startCoordinates = '';
+
+document.getElementById('change-start').onclick = showSearch;
+showSearch();
+
+async function geocode(query) {
+   const url = `https://geocoder.api.here.com/6.2/geocode.json?app_id=${here.id}&app_code=${here.code}&searchtext=${query},+Berlin` //only inside Berlin
+   const response = await fetch(url);
+   const data = await response.json();
+   return await data.Response.View[0].Result[0].Location.NavigationPosition[0];
+}
+
+async function showSearch() {
+   const startAddress = document.getElementById('start').value;
+   startCoordinates = await geocode(startAddress);
+   map.setView([startCoordinates.Latitude, startCoordinates.Longitude], 12);
+
+   var searchPopup = L.popup({closeButton: false});
+   searchPopup
+
+   .setLatLng([startCoordinates.Latitude, startCoordinates.Longitude])
+   .setContent('</p><p><strong>Name: </strong>' + startAddress + '</p><p><strong>Location: </strong>' + [startCoordinates.Latitude, startCoordinates.Longitude] )
+   .openOn(map); 
+
+}
 
 
 /*
@@ -137,8 +164,6 @@ function addAuthoritiesPlace(){
  function addMarker(newpos, html){
    ev_marker = L.marker([newpos.lat, newpos.lng], {icon: myIcon})
    ev_marker.addTo(map).on('dblclick', onDblClick)
-   //ev_marker.off('dblclick', onDblClick)
-   //servicesLocations.push([newpos.lat, newpos.lng])
  }
  
  addAuthoritiesPlace()
@@ -187,14 +212,19 @@ var onResult = function(result) {
    }
    
    // Add the polygon to the map:
-   
+   var isolinePolygon = {};
+
+   //check here:     https://gis.stackexchange.com/questions/238414/leaflet-how-to-add-a-new-and-remove-an-old-marker-every-time-the-user-click-on/238419
+   alert(isolinePolygon)
+
+   if (isolinePolygon != undefined) {
+      map.removeLayer(isolinePolygon);
+   };
+
    isolinePolygon = L.polygon(array)
    isolinePolygon.addTo(map)
  
     
-   // Center and zoom the map so that the whole isoline polygon is
-   // in the viewport:
-  //map.getViewModel().setLookAtData({bounds: isolinePolygon.getBoundingBox()})
  }
 
 
