@@ -58,7 +58,7 @@ body {
    position: absolute;
    top: 0;
    left: 0;
-   background-color:rgba(8, 8, 1, 0.5);
+   background-color:rgba(8, 8, 1, 0.8);
    z-index: 1000;
    padding: 0px;
 }
@@ -108,12 +108,12 @@ body {
   bottom: 30px;
   left: 15px;
   z-index: 1001;
-  background-color:rgba(173, 131, 2, 0.3);
+  background-color:#262D37;
   /* display: none; */
   width: 180px;
   height: 30px;
   border-radius: 6px;
-  color: white;
+  color: #2ECFC2;
   box-shadow: 2px 2px 2px black;
   border-radius: 5px;
 }
@@ -123,12 +123,12 @@ body {
   bottom: 30px;
   left: 200px;
   z-index: 1001;
-  background-color:rgba(173, 131, 2, 0.8);
+  background-color:#262D37;
   /* display: none; */
   width: 60px;
   height: 30px;
   border-radius: 6px;
-  color: white;
+  color: #2ECFC2;
   box-shadow: 2px 2px 2px black;
   border-radius: 5px;
 }
@@ -140,19 +140,40 @@ body {
   bottom: 120px;
   left: 10px;
   z-index: 1001;
-  background-color:rgba(26, 24, 24, 0.6);
+  background-color:rgba(54, 50, 50, 0.6);
   /* display: none; */
-  width: 250px;
+  width: 270px;
   height: 90px;
-  color: white;
+  color: #2ECFC2;
   font-size: 1em;
   text-decoration: none;
   text-align: center;
   border: 0.1px solid rgb(0, 0, 0);
 }
 
+/* Custom Pop up -> isolinePopup */
+.customIso .leaflet-popup-tip {
+  display: none;
+}
+.customIso .leaflet-popup-content-wrapper {
+  background: #EFF2F3;
+  border: 1.5px solid #D3D6D8;
+  color: #656565;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-family: 'Roboto Mono', sans-serif;
+  font-size: 16px;
+}
 
-/* Point Buttons */
+/* Custom Pop up -> Other features */
+.customOther .leaflet-popup-tip,
+.customOther .leaflet-popup-content-wrapper {
+  background: #262D37;
+  color: #2ECFC2;
+}
+
+/* Point Feature Buttons */
 .button {
   display: inline-block;
   height: 100px;
