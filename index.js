@@ -1,13 +1,3 @@
-/* 
-
-GENERAL IDEAS:
--> implement deleting of isoline range
--> check in other browser wether your app works
--> prepare a code for workshop
--> prepare presentation for workshop 
-
-*/
-
 
 /*
 
