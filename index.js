@@ -1,8 +1,10 @@
 /* 
 
-
 GENERAL IDEAS:
--> somehow indicate this range for locations
+-> implement deleting of isoline range
+-> check in other browser wether your app works
+-> prepare a code for workshop
+-> prepare presentation for workshop 
 
 */
 
@@ -54,7 +56,7 @@ var layer = Tangram.leafletLayer({
 
 });
 layer.addTo(map);
-map.setView([52.5200, 13.4050], 12);
+map.setView([52.5200, 13.4050], 11);
 
 /*
 
@@ -68,6 +70,8 @@ var centerBerlin = {lat: 52.5200, lng: 13.4050}
 
 const servicesLocations = [];
 
+
+var isolinePolygon = {};
 /*
 **********HERE GEOCODING************
 */
@@ -88,7 +92,7 @@ async function geocode(query) {
 async function showSearch() {
    const startAddress = document.getElementById('start').value;
    startCoordinates = await geocode(startAddress);
-   map.setView([startCoordinates.Latitude, startCoordinates.Longitude], 12);
+   map.setView([startCoordinates.Latitude, startCoordinates.Longitude], map.getZoom());
 
    var searchPopup = L.popup({closeButton: false});
    searchPopup
@@ -180,7 +184,7 @@ var onResult = function(result) {
      result.response.center.latitude,
      result.response.center.longitude),
    isolineCoords = result.response.isoline[0].component[0].shape,
-   isolinePolygon,
+   //isolinePolygon,
    isolineCenter
  
 
@@ -211,19 +215,24 @@ var onResult = function(result) {
       }
    }
    
-   // Add the polygon to the map:
-   var isolinePolygon = {};
-
-   //check here:     https://gis.stackexchange.com/questions/238414/leaflet-how-to-add-a-new-and-remove-an-old-marker-every-time-the-user-click-on/238419
-   alert(isolinePolygon)
-
+   // Add the polygon to the map & remove when 1 already exist:
+   
    if (isolinePolygon != undefined) {
       map.removeLayer(isolinePolygon);
    };
 
    isolinePolygon = L.polygon(array)
    isolinePolygon.addTo(map)
- 
+
+   map.fitBounds(isolinePolygon.getBounds());
+   //map.setView([isolinePolygon.getCenter().lat, isolinePolygon.getCenter().lng], map.getZoom());
+   
+   var isolinePopup = L.popup({className: 'customIso', closeButton: false});
+   isolinePopup
+
+   .setLatLng([isolinePolygon.getCenter().lat, isolinePolygon.getCenter().lng])
+   .setContent('</p><p>How far can I get in 15 min?')
+   .openOn(map); 
     
  }
 
@@ -239,7 +248,7 @@ var onResult = function(result) {
    var routingParams = {
    'mode': 'fastest;car;traffic:enabled',
    'start': myStart,
-   'range': '600', // 10 (10x60secs) minutes of driving 
+   'range': '900', // 15 (15x60secs) minutes of driving 
    'rangetype': 'time'
 }
 
@@ -271,7 +280,7 @@ function toggle(layerName) {
 
  */
 
-var popup = L.popup({closeButton: false});
+var popup = L.popup({className: "customOther", closeButton: false});
 
 function showPolygonPopup(latlng, Trafficcellname, Totalnumberofaccidents, Accidentswithslightlyinjured,
    Accidentswithseriouslyinjured, Accidentsinvolvingfatalities) {
