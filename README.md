@@ -1,6 +1,6 @@
 # **Save the cyclists!**
 
-- Check out the web-map [**here**](https://olafwysocki.github.io/)!
+- Check out the web-map [**here**](https://oloocki.github.io/)!
 - or XYZ Studio Draft version [**here**](https://xyz.here.com/viewer/?project_id=2bda1f87-2b85-4513-8499-f8847325e8f8)!
 
 
