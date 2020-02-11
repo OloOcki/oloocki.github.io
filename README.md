@@ -9,8 +9,8 @@ Do you wanna recreate the solution? Would you like to inherit new ideas?
 
 - Check out the "Hands on" blog post at HERE Developer page [**Helping Cyclists Stay Safe Using HERE Studio**](https://developer.here.com/blog/helping-cyclists-stay-safe-here-studio?_lrsc=13d8722c-a051-46a5-ba3f-cc20e5148d03&cid=other-Elevate-FD-0-HERE-&utm_source=Elevate&utm_medium=social&utm_campaign=Online_CommsShare_2020) written by me (@OloOcki)
 
-
-## **Datasets from [Geoportal Berlin](https://fbinter.stadt-berlin.de/fb/index.jsp):**
+## **Data used to save cyclists**
+### **Datasets from [Geoportal Berlin](https://fbinter.stadt-berlin.de/fb/index.jsp):**
 
 - [**Lichtsignalanlagen**](https://fbinter.stadt-berlin.de/fb/index.jsp) (*Traffic lights*)
 
@@ -43,7 +43,7 @@ types of lines (solid line, dashed line), obligation to use (yes, no), also addr
 
   - Dataset containing information what part of sidewalks (including cycleways) are cleaned by city maintanance during winter
 
-## **Dataset from [Statistisches Bundesamt (Destatis):](https://www.destatis.de/EN/About-Us/_node.html)** (*The Federal Statistical Office*):
+### **Dataset from [Statistisches Bundesamt (Destatis):](https://www.destatis.de/EN/About-Us/_node.html)** (*The Federal Statistical Office*):
 
 - [**Verkehrsunfälle 2018**](https://unfallatlas.statistikportal.de/) (*Traffic accidents 2018*)
 
