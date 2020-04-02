@@ -45,7 +45,7 @@ types of lines (solid line, dashed line), obligation to use (yes, no), also addr
 
 ### **Dataset from [Statistisches Bundesamt (Destatis):](https://www.destatis.de/EN/About-Us/_node.html)** (*The Federal Statistical Office*):
 
-- [**Verkehrsunfälle 2018**](https://unfallatlas.statistikportal.de/) (*Traffic accidents 2018*)
+- [**Verkehrsunfälle 2018**](https://unfallatlas.statistikportal.de/) (*Traffic accidents 2018*) [**Description**](https://opendata-esri-de.opendata.arcgis.com/datasets/9e918439350d4fff88447e950b54b003_0)
 
   - Dataset contains road accidents with personal injury on national level. It has position, type of accident (i.e. Turning accident, Turning
 over / crossing accident) type of collission (i. e. collision with laterally moving vehicle), accident category (i.e. accident with
