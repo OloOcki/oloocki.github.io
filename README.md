@@ -53,4 +53,4 @@ fatalities, accident with severely injured), Light conditions (i.e. daylight, ni
 participating drivers and type of vehicle (i.e. bicycle, car) or pedestrians
 
 
-<iframe src="https://unfallatlas.statistikportal.de/" scrolling='no' style='height:750px; width:750px;'></iframe>
+<iframe src="https://unfallatlas.statistikportal.de/" scrolling='no' style='height:750px; width:750px;'> </iframe>
